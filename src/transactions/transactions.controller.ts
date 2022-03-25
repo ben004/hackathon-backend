@@ -1,5 +1,5 @@
 import { Transactions } from '@entity/transactions.entity';
-import { Controller, Get, HttpCode } from '@nestjs/common';
+import { Controller, Get, HttpCode, Param } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 
 @Controller('transactions')
@@ -8,9 +8,11 @@ export class TransactionsController {
         private transactionsService: TransactionsService
     ) { }
 
-    @Get()
+    @Get('/:userId')
     @HttpCode(200)
-    async getTransaction(): Promise<Transactions[]> {
-        return this.transactionsService.getTransactions();
+    async getTransaction(
+        @Param('userId') userId: number,
+    ): Promise<Transactions[]> {
+        return this.transactionsService.getTransactions(userId);
     }
 }

@@ -1,8 +1,9 @@
 import { Transactions } from '@entity/transactions.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { TransactionsType } from '@shared/utills';
 import { identity } from 'lodash';
-import { getConnection, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TransactionsService {
@@ -28,14 +29,16 @@ export class TransactionsService {
     }
 
     // // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    async getTransactions (): Promise<Transactions[]> {
+    async getTransactions (userId: number): Promise<Transactions[]> {
         try {
-            const data = await getConnection()
-            .getRepository(Transactions)
-            .createQueryBuilder("transactions")
-            .leftJoinAndSelect("transactions.categoryId", "categories")
-            .getMany();
-            return data.map(transaction => this.responseObject(transaction));
+            const transactions = await this.transactionsRepository.find({
+                where: {
+                    userId,
+                    transactionType: TransactionsType.DEBIT
+                },
+                relations: ['categoryId', 'userId']
+            })
+            return transactions.map(transaction => this.responseObject(transaction));
         } catch (error) {
             console.log(error)
         }

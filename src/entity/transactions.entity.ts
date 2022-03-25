@@ -1,3 +1,4 @@
+import { TransactionsType } from '@shared/utills';
 import { Column, Entity, JoinColumn, ManyToOne, } from 'typeorm';
 import { Base } from "./base.entity";
 import { Categories } from './category.entity';
@@ -21,7 +22,8 @@ export class Transactions extends Base {
   @Column({
     name: 'transaction_type',
     nullable: false,
-    length: 50
+    type: 'enum',
+    enum: TransactionsType
   })
   transactionType: string;
 
