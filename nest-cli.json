@@ -1,0 +1,15 @@
+{
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "projects": {
+    "wse": {
+      "type": "library",
+      "root": "libs/wse",
+      "entryFile": "index",
+      "sourceRoot": "libs/wse/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/wse/tsconfig.lib.json"
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "paths": {
+      "@wse/wse": [
+        "libs/wse/src"
+      ],
+      "@wse/wse/*": [
+        "libs/wse/src/*"
+      ],
+      "@shared/*": ["src/shared/*"],
+      "@entity/*": ["src/entity/*"]
+    }
+  }
+}

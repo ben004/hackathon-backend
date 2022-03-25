@@ -1,0 +1,118 @@
+Deal ID: 5461906268
+
+Line Item 1: 1653734061
+Line Item 2: 1653734062
+Line Item 3: 1653734063
+Line Item 4: 1653734064
+
+Product ID: 1016804906 (Nuevo Alumno 12 Meses)
+Product ID: 1016804909 (Matrícula)
+
+
+Product properties: 
+
+Net price - amount
+Product description - description
+Unit discount - discount
+Formas de Pago - formas_de_pago
+Unit cost - hs_cost_of_goods_sold
+Discount Percentage - hs_discount_percentage
+Price ARS - hs_price_ars
+Term - hs_recurring_billing_period
+SKU - hs_sku
+Motivo de Descuento - motivo_de_descuento
+Name - name
+Unit price - price
+Quantity - quantity
+Tax - tax
+
+name,description,amount,discount,formas_de_pago,hs_discount_percentage,hs_cost_of_goods_sold,hs_price_ars,hs_sku,motivo_de_descuento,price,quantity,tax
+
+
+Line item properties:
+Net price - amount
+Unit discount - discount
+Formas de Pago - formas_de_pago
+Unit cost - hs_cost_of_goods_sold
+Calculated Discount - hs_discount
+Discount Percentage - hs_discount_percentage
+Pre Discount Amount - hs_pre_discount_amount
+Start Date - hs_recurring_billing_start_date
+SKU - hs_sku
+Total contract value - hs_tcv
+Motivo de Descuento - motivo_de_descuento
+Unit price - price
+Quantity - quantity
+Tax - tax
+
+amount,discount,formas_de_pago,hs_cost_of_goods_sold,hs_discount,hs_discount,hs_discount_percentage,hs_pre_discount_amount,hs_recurring_billing_start_date,hs_sku,hs_tcv,motivo_de_descuento,price,quantity,tax
+
+
+
+Matricula Amount – 4800 * 1 * (1 - 100) = -475200
+Matricula Discount – 4800 * 1 * 100 = 480000
+
+Sum = 4800
+
+Material Didactico - 700 * 12 * (1 - 100) = -831600
+Material Didactico Disount – 700 * 12 * 100 = 840000
+
+Sum = 8400
+
+
+Aggregate Amount = 
+
+Item 1 - 4903.6 * 6 * (1 - 20) = -5,59,010.4
+Item 2 - 4903.6 * 6 * (1 - 50) = -14,41,658.4
+Item 3 - 4800 * 1 * (1 - 100) = -4,75,200
+Item 4 - 700 * 12 * (1 - 100) = -8,31,600
+
+Amount = xxxxxx
+
+Balance[1] - 23537
+Balance[2] - 14710
+Balance[3] - 0
+Balance[4] - 0
+
+
+Balance [CreditCard] – Amount [x]
+
+
+Section 1:
+Tipo de curso - Type of course
+==============================
+Tiempo Determinado - Determined Time - No (HubSpot deals dropdown property)
+Mes a Mes - Month to Month - No (HubSpot deals dropdown property)
+Cod. del curso - Course code - No (Line item name other than Matricula or ditatico)
+Tiempo de duracion - Duration Time - Yes
+Fecha Inicio - Start Date - Yes
+Fecha Finalización - End Date - Yes
+
+Section 2:
+Precio del contrato Mensual - Monthly contract price
+====================================================
+
+Matrícula - Enrollment - No
+Material Didáctico - Teaching materials - No
+Cuota Mensual - Monthly Fee - No
+
+
+Section 3:
+Descuentos y Bonificaciones de la contratación por Tiempo Determinado - Discounts and Bonuses for hiring for a Determined Time
+==============================================================================================================================
+Matrícula - Enrollment - No
+Material Didáctico - Teaching materials - No
+Importe de curso - Course amount - No
+Total a pagar - Total to pay - No
+
+Section 4:
+Forma de pago - way to pay
+==========================
+anticipo - Advance
+Saldo 1 - Balance 1
+Saldo 2 - Balance 2
+Saldo 3 - Balance 3
+
+
+Price after discount = Original price or MRP * (1 – (discount / 100))
+

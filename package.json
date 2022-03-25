@@ -1,25 +1,92 @@
 {
-  "name": "daily-data-push",
-  "version": "1.0.0",
+  "name": "hs-adapter",
+  "version": "0.0.1",
   "description": "",
-  "main": "handler.js",
-  "directories": {
-    "lib": "lib"
-  },
+  "author": "",
+  "private": true,
+  "license": "UNLICENSED",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prebuild": "rimraf dist",
+    "build": "nest build",
+    "build:prod": "./node_modules/.bin/nest build",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:debug": "nest start --debug --watch",
+    "start:prod": "node dist/main",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
-  "author": "hackathon",
-  "license": "ISC",
   "dependencies": {
-    "dotenv": "^10.0.0",
-    "lodash": "^4.17.21",
+    "@hubspot/api-client": "^2.0.1",
+    "@nestjs/bull": "^0.1.2",
+    "@nestjs/common": "^7.0.0",
+    "@nestjs/config": "^0.5.0",
+    "@nestjs/core": "^7.0.0",
+    "@nestjs/platform-express": "^7.0.0",
+    "@nestjs/serve-static": "^2.1.3",
+    "@nestjs/typeorm": "^7.1.0",
+    "@types/bcrypt": "^3.0.0",
+    "@types/lodash": "^4.14.157",
+    "async": "^3.2.0",
+    "bcrypt": "^5.0.0",
+    "body-parser": "^1.19.0",
+    "bull": "^3.15.0",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
+    "express-rate-limit": "^5.1.3",
+    "flat": "^5.0.0",
+    "form-data": "^3.0.0",
+    "helmet": "^3.23.3",
+    "jsonwebtoken": "^8.5.1",
     "moment-timezone": "^0.5.33",
     "mysql": "^2.18.1",
-    "node": "^16.6.1",
-    "serverless-dotenv-plugin": "^3.9.0"
+    "reflect-metadata": "^0.1.13",
+    "request-promise": "^4.2.6",
+    "rimraf": "^3.0.2",
+    "rxjs": "^6.5.4",
+    "typeorm": "^0.2.25"
   },
   "devDependencies": {
-    "serverless-offline": "^8.2.0"
+    "@nestjs/cli": "^7.0.0",
+    "@nestjs/schematics": "^7.0.0",
+    "@nestjs/testing": "^7.0.0",
+    "@types/bull": "^3.14.0",
+    "@types/express": "^4.17.3",
+    "@types/jest": "25.2.3",
+    "@types/node": "^13.9.1",
+    "@types/redis": "^2.8.25",
+    "@types/request-promise": "^4.1.46",
+    "@types/supertest": "^2.0.8",
+    "@typescript-eslint/eslint-plugin": "3.0.2",
+    "@typescript-eslint/parser": "3.0.2",
+    "eslint": "7.1.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-import": "^2.20.1",
+    "jest": "26.0.1",
+    "prettier": "^1.19.1",
+    "supertest": "^4.0.2",
+    "ts-jest": "26.1.0",
+    "ts-loader": "^6.2.1",
+    "ts-node": "^8.10.2",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^3.7.4"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": ".",
+    "testRegex": ".spec.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/src/",
+      "<rootDir>/libs/"
+    ]
   }
 }
