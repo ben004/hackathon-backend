@@ -1,0 +1,38 @@
+service: expense-tracker-backend
+
+plugins:
+    - serverless-dotenv-plugin
+    - serverless-offline
+
+provider:
+    name: aws
+    runtime: nodejs14.x
+    stage: dev
+    region: ap-southeast-2
+    profile: hackathon
+
+    iamRoleStatements:
+        - Effect: Allow
+          Action:
+            - "logs:CreateLogGroup"
+            - "logs:CreateLogStream"
+            - "logs:PutLogEvents"
+          Resource: "arn:aws:logs:${self:provider.region}:*:*"
+
+    stackTags:
+        author: hackathon
+        environment: dev
+
+functions:
+  # Collection for VND regions
+  #starts ECS for weekday scrape
+  sampleApi:
+    timeout: 900
+    memorySize: 1024
+    handler: handler.sampleAPI
+    events:
+      - http:
+          path: 'test'
+          method: get
+          cors: true
+          authorizer: aws_iam

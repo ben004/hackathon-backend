@@ -1,0 +1,25 @@
+{
+  "name": "daily-data-push",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "hackathon",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "lodash": "^4.17.21",
+    "moment-timezone": "^0.5.33",
+    "mysql": "^2.18.1",
+    "node": "^16.6.1",
+    "serverless-dotenv-plugin": "^3.9.0"
+  },
+  "devDependencies": {
+    "serverless-offline": "^8.2.0"
+  }
+}
