@@ -13,4 +13,5 @@ export interface CategoriesListResponse {
     categoryName: string,
     id: number,
     percentage: string,
+    total: number,
 }

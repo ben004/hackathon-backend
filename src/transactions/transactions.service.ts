@@ -25,12 +25,16 @@ export class TransactionsService {
         private readonly categoryKeywordsRepository: Repository<CategoryKeyWords>
     ) { }
 
-    private async validateAndGetUser (userId: string) {
-        const user = await this.usersRepository.findOne({
+    private async getUser(userId: string) {
+        return this.usersRepository.findOne({
             where: {
                 cognito_id: userId
             }
         });
+    }
+
+    private async validateAndGetUser (userId: string) {
+        const user = await this.getUser(userId);
         if(isEmpty(user)){
            throw new HttpException("User not exist", HttpStatus.NOT_FOUND);
         }
@@ -162,7 +166,7 @@ export class TransactionsService {
         }
     }
 
-    async getCategoriesForUserId(userId: string, date: string): Promise<unknown> {
+    async getCategoriesForUserId(userId: string, date: string): Promise<CategoriesListResponse[]> {
         try {
             const user = await this.validateAndGetUser(userId)
             const categories = await this.categoriesRepository.find({
@@ -180,13 +184,30 @@ export class TransactionsService {
                     id,
                     categoryName,
                     list: categorieTransactionList,
-                    percentage: ((categorieBasedTotalAmount / totalAmount) * 100).toFixed(2)
+                    total: categorieBasedTotalAmount,
+                    percentage: ((categorieBasedTotalAmount / totalAmount) * 100).toFixed(2),
                 }
             });
     
             return responseObj;
         } catch (error) {
             throw new HttpException(error, HttpStatus.BAD_REQUEST)
+        }
+    }
+
+    async createUser(userId: string) {
+        try {
+            const existUser = await this.getUser(userId);
+            if(!isEmpty(existUser))
+                throw new HttpException("User already exist", HttpStatus.FOUND);
+            const user = new Users;
+            user.cognito_id = userId;
+            await this.usersRepository.save(user);
+            return {
+                message: "User created successfully",
+            }
+        } catch (error) {
+            throw new HttpException("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 }

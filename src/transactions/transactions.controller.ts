@@ -4,13 +4,13 @@ import { Controller, Get, HttpCode, Param, Post, Body, Query } from '@nestjs/com
 import { newTransactionDTO } from './dto/transaction.dto';
 import { TransactionsService } from './transactions.service';
 
-@Controller('transactions')
+@Controller()
 export class TransactionsController {
     constructor(
         private transactionsService: TransactionsService
     ) { }
 
-    @Get('/:userId')
+    @Get('/transactions/:userId')
     @HttpCode(200)
     async getTransaction(
         @Param('userId') userId: string,
@@ -18,7 +18,7 @@ export class TransactionsController {
         return this.transactionsService.getTransactions(userId);
     }
 
-    @Post('/create')
+    @Post('/transactions/create')
     @HttpCode(201)
     async createTransaction(
         @Body() newTransaction: newTransactionDTO
@@ -26,12 +26,20 @@ export class TransactionsController {
         return this.transactionsService.createTransaction(newTransaction);
     }
 
-    @Get('/:userId/categories')
+    @Get('/transactions/:userId/categories')
     @HttpCode(200)
     async getCategories(
         @Param('userId') userId: string,
         @Query('month') month: string,
     ): Promise<Object> {
         return this.transactionsService.getCategoriesForUserId(userId, month);
+    }
+
+    @Post('/user/:userId')
+    @HttpCode(201)
+    async createUser(
+        @Param('userId') userId: string,
+    ): Promise<Object> {
+        return this.transactionsService.createUser(userId);
     }
 }
