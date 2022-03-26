@@ -1,6 +1,6 @@
 import { TransactionListResponse } from '@shared/interface/transaction.interface';
 import { Transactions } from '@entity/transactions.entity';
-import { Controller, Get, HttpCode, Param, Post, Body } from '@nestjs/common';
+import { Controller, Get, HttpCode, Param, Post, Body, Query } from '@nestjs/common';
 import { newTransactionDTO } from './dto/transaction.dto';
 import { TransactionsService } from './transactions.service';
 
@@ -13,16 +13,25 @@ export class TransactionsController {
     @Get('/:userId')
     @HttpCode(200)
     async getTransaction(
-        @Param('userId') userId: number,
+        @Param('userId') userId: string,
     ): Promise<TransactionListResponse> {
         return this.transactionsService.getTransactions(userId);
     }
 
-    @Post('/create')
+    @Post('/:userId/create')
     @HttpCode(201)
     async createTransaction(
         @Body() newTransaction: newTransactionDTO
     ): Promise<Object> {
         return this.transactionsService.createTransaction(newTransaction);
+    }
+
+    @Get('/:userId/categories')
+    @HttpCode(200)
+    async getCategories(
+        @Param('userId') userId: string,
+        @Query('month') month: string,
+    ): Promise<Object> {
+        return this.transactionsService.getCategoriesForUserId(userId, month);
     }
 }
