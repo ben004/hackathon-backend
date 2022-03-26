@@ -60,9 +60,16 @@ export const getTransactionSourceAndDestination = (messageArray:Array<string> , 
     if(transactionMode === TRANSACTION_MODE.UPI){
         const firstACOccurence = findIndex(messageArray, (word) => word === 'a/c');
         const firstVPAoccurence = findIndex(messageArray, (word) => word === 'vpa');
-        transactionSource    = messageArray[firstACOccurence+1];
+        transactionSource = messageArray[firstACOccurence+1];
         if(transactionType === TRANSACTION_TYPES.DEBIT){
             //TODO: Get transaction destination
+            let transactionDestinationInitial = messageArray[firstVPAoccurence+1];
+            let stringAfterAtSymbol = transactionDestinationInitial.split('@').pop();
+            let indexOfNonAlphabet = stringAfterAtSymbol.search(/[^a-z]/i);
+            let finalStringAfterAtSymbol = stringAfterAtSymbol.substring(0,indexOfNonAlphabet);
+            let transactionArr = transactionDestinationInitial.split('@');
+            transactionArr[1] = finalStringAfterAtSymbol;
+            transactionDestination = transactionArr.join('@');
         } else if(transactionType === TRANSACTION_TYPES.CREDIT) {
             transactionDestination = messageArray[firstVPAoccurence+1];
         }
