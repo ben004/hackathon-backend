@@ -17,7 +17,7 @@ export class Transactions extends Base {
     nullable: false,
     type: 'date'
   })
-  transactionMadeOn: Date;
+  transactionMadeOn: string;
 
   @Column({
     name: 'transaction_type',
