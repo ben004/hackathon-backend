@@ -4,12 +4,13 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { getTransactionAmountFromMessage, getTransactionDate, getTransactionId, getTransactionModeFromMessage, getTransactionSourceAndDestination, getTransactionTypeFromMessage } from '@shared/helper/transactionsHelper';
 import { TransactionsType } from '@shared/utills';
-import { filter, isEmpty } from 'lodash';
-import { Between, In, Repository } from 'typeorm';
+import { filter, isEmpty, } from 'lodash';
+import { Between, In, Like, Repository } from 'typeorm';
 import * as moment from 'moment-timezone';
 import { CategoriesListResponse, TransactionListResponse } from '@shared/interface/transaction.interface';
 import { newTransactionDTO } from './dto/transaction.dto';
 import { Categories } from '@entity/category.entity';
+import { CategoryKeyWords } from '@entity/categorytype.entity';
 
 @Injectable()
 export class TransactionsService {
@@ -20,6 +21,8 @@ export class TransactionsService {
         private readonly usersRepository: Repository<Users>,
         @InjectRepository(Categories)
         private readonly categoriesRepository: Repository<Categories>,
+        @InjectRepository(CategoryKeyWords)
+        private readonly categoryKeywordsRepository: Repository<CategoryKeyWords>
     ) { }
 
     private async validateAndGetUser (userId: string) {
@@ -32,6 +35,36 @@ export class TransactionsService {
            throw new HttpException("User not exist", HttpStatus.NOT_FOUND);
         }
         return user
+    }
+
+    private async getCategoryByName (categoryname: string){
+        const categories = await this.categoriesRepository.findOne({
+            where: {
+                isDeleted: false,
+                categoryName: categoryname
+            }
+        });
+        return categories;
+    }
+    
+    private async getCategoryKeyWordForDestination (transactionDestination: string) {
+        const categoryKeyword = await this.categoryKeywordsRepository.findOne({
+            where: {
+                isDeleted: false,
+                keyWord: Like(`%${transactionDestination}%`)
+                
+            },
+            relations: ['categoryId']
+        });
+        if(isEmpty(categoryKeyword)){
+            const givenKeyWordCheckCategory = await this.getCategoryByName(transactionDestination);
+            if(isEmpty(givenKeyWordCheckCategory)){
+                const categoryDefault = await this.getCategoryByName('Others');
+                return categoryDefault;
+            }
+            return givenKeyWordCheckCategory;
+        }
+        return categoryKeyword.categoryId;
     }
 
     private responseObject (transactions: Transactions): any {
@@ -85,7 +118,7 @@ export class TransactionsService {
         }
     }
 
-    async createTransaction (newTransaction: newTransactionDTO): Promise<Object> {
+    async createTransaction (newTransaction: newTransactionDTO): Promise<unknown> {
         try {
             const {
                 message,
@@ -103,6 +136,12 @@ export class TransactionsService {
             const transactionMadeOn = getTransactionDate(lowerCasemessageArray);
             const {transactionSource ,transactionDestination} = getTransactionSourceAndDestination(lowerCasemessageArray, transactionType,transactionMode);
             const transactionId = getTransactionId(lowerCasemessageArray);
+            // const allCategories = await this.getAllCategories();
+            let keywordToBeSearched = transactionDestination;
+            if(['salary'].some(word => lowerCasemessageArray.includes(word))){
+                keywordToBeSearched = 'Salary';
+            }
+            const categoryDetails = await this.getCategoryKeyWordForDestination(keywordToBeSearched);
             //TODO: Get category_id from category_key_word using the destination of the transaction
             const transaction = new Transactions;
             transaction.userId = userIdFromDb;
@@ -114,6 +153,7 @@ export class TransactionsService {
             transaction.transactionAmount = transactionAmount;
             transaction.transactionMadeOn = transactionMadeOn;
             transaction.transactionMode = transactionMode;
+            transaction.categoryId = categoryDetails;
             const insertedData = await this.transactionsRepository.save(transaction);
             return {success: true, message: "Inserted successfully", insertedData};
         } catch (error) {
@@ -122,7 +162,7 @@ export class TransactionsService {
         }
     }
 
-    async getCategoriesForUserId(userId: string, date: string) {
+    async getCategoriesForUserId(userId: string, date: string): Promise<unknown> {
         try {
             const user = await this.validateAndGetUser(userId)
             const categories = await this.categoriesRepository.find({

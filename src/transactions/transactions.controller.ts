@@ -18,7 +18,7 @@ export class TransactionsController {
         return this.transactionsService.getTransactions(userId);
     }
 
-    @Post('/:userId/create')
+    @Post('/create')
     @HttpCode(201)
     async createTransaction(
         @Body() newTransaction: newTransactionDTO
